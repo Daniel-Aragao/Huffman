@@ -1,0 +1,15 @@
+body{
+    background-color: gray;
+    margin-top: 20px;
+}
+
+#heap-tree-container>.tree-node{
+    border: 2px inset;
+    /*display: inline-block;*/
+    padding: 2px;
+}
+#tree-container>.tree-node{
+    border: 2px inset;
+    /*display: inline-block;*/
+    padding: 2px;
+}

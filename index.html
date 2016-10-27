@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="JavaScript/jquery-latest.js"></script>
+        <script src="JavaScript/bootstrap.min.js" ></script>
+        <script src="Arvores/Arvore binaria.js"></script>
+        <script src="JavaScript/Site.js" ></script>
+        <link rel="stylesheet" href="../css/bootstrap.min.css" >
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="../Arvores/Arvore.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Árvores</div>                    
+                    <div id="content" class=" panel-body">
+                        <div class="col-lg-12">
+                            <div class="col-lg-3">
+                                <input class="form-control" type="text" name="nome" id="nome" value="anamariana">
+                            </div>
+                            <div class="col-lg-3">
+                                <button id="calcular" type="button" class="btn btn-primary">Calcular</button>
+                            </div>
+                        </div>
+                        <div id="heap-tree-container" class="col-lg-6"></div>
+                        <div id="tree-container" class="col-lg-6"></div>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Heap</th>
+                                    <th>Tree</th>
+                                </tr>                            
+                            </thead>
+                            <tbody id="tabela">
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $("#calcular").on('click', function(){
+                htree = TreeJs.newHeapTreeMin();
+                heapTree = TreeJs.newHeapTreeMin();
+                tree = null;
+
+                var nome = $("#nome").val();
+
+                for(var i = 0; i < nome.length; i++){
+                    htree.addNode(nome[i],1);
+                    heapTree.addNode(nome[i],1);
+                }
+
+                var tr = document.createElement("tr");                    
+                heapAppend(tr);
+                document.getElementById("tabela").appendChild(tr)
+
+                while (htree.getVetor().length - 1){
+                    var _1 = htree.removeFirst();
+                    var _2 = htree.removeFirst();
+                    var _3 = TreeJs.newHeapNode(_1.key + ", " + _2.key, _1.value + _2.value) 
+
+                    var newTree = TreeJs.newTree();
+                    newTree.addNode(_3.value)
+                    newTree.addNode(_1.key, _3.value, "left");
+                    newTree.addNode(_2.key, _3.value, "right");
+
+                    if(tree == null){
+                        tree = newTree;
+                    }else{
+                        var treeRoot = tree.getRoot();
+                        var newTreeRoot = newTree.getRoot();
+                        var newValue = treeRoot.value + newTreeRoot.value;
+
+                        tree = TreeJs.newTree();
+                        tree.addNode(newValue);
+                        tree.addNode(treeRoot, newValue, "left");
+                        tree.addNode(newTreeRoot, newValue, "right");
+                    }
+
+                    tr = document.createElement("tr");                    
+                    heapAppend(tr);
+                    treeAppend(tree, tr);
+                    document.getElementById("tabela").appendChild(tr)
+                }
+                var ultimo = htree.removeFirst();
+                var lastNode = TreeJs.newNode(ultimo.key);
+
+                var treeRoot = tree.getRoot();
+                var newValue = treeRoot.value + ultimo.value;
+
+                tree = TreeJs.newTree();
+                tree.addNode(newValue);
+                tree.addNode(treeRoot, newValue, "left");
+                tree.addNode(lastNode, newValue, "right");
+
+                tr = document.createElement("tr");
+                var td = document.createElement("td");
+                tr.appendChild(td)
+                treeAppend(tree, tr);
+                document.getElementById("tabela").appendChild(tr)
+            });
+
+            function heapAppend(tr){
+                var td = document.createElement("td");
+                var root_html = TreeJs.buildHTML(htree, 0)
+                td.appendChild(root_html)
+                tr.appendChild(td)
+            }
+
+            function treeAppend(tree, tr){
+                var td = document.createElement("td");
+                var root_html = TreeJs.buildHTML(tree.getRoot());
+                td.appendChild(root_html)
+                tr.appendChild(td)
+            }
+        </script>
+    </body>
+</html>
