@@ -24,6 +24,12 @@
                             <div class="col-lg-3">
                                 <button id="calcular" type="button" class="btn btn-primary">Calcular</button>
                             </div>
+                            <div class="col-lg-3">
+                                <span>
+                                    Resultado: 
+                                </span>
+                                <span id="result"></span>
+                            </div>
                         </div>
                         <div id="heap-tree-container" class="col-lg-6"></div>
                         <div id="tree-container" class="col-lg-6"></div>
@@ -103,6 +109,10 @@
                 tr.appendChild(td)
                 treeAppend(tree, tr);
                 document.getElementById("tabela").appendChild(tr)
+
+                sum = 0;
+                heapTree.getVetor().forEach(function(v,i){  sum += v.value* tree.getAltura(v.key) })
+                document.getElementById("result").innerHTML = sum
             });
 
             function heapAppend(tr){

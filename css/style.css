@@ -13,3 +13,8 @@ body{
     /*display: inline-block;*/
     padding: 2px;
 }
+
+#result{
+    color: red;
+    font-weight: bold;
+}
